@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using WebApplicationMvcSmartBreadcrumbsTest.Models;
 
 namespace WebApplicationMvcSmartBreadcrumbsTest.Controllers;
@@ -13,6 +14,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [DefaultBreadcrumb("首頁")]
     public IActionResult Index()
     {
         return View();
