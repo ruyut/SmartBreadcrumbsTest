@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SmartBreadcrumbs.Attributes;
-using WebApplicationMvcSmartBreadcrumbsTest.Models;
 
 namespace WebApplicationMvcSmartBreadcrumbsTest.Controllers;
 
@@ -14,20 +12,33 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    [DefaultBreadcrumb("首頁")]
+    [DefaultBreadcrumb("Index")]
     public IActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    [Breadcrumb("Page1")]
+    public IActionResult Page1()
     {
+        ViewData["Title"] = "Page1";
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    private List<string> _list = new List<string> { "a", "b", "c" };
+
+    [Breadcrumb("Page2", FromAction = nameof(Page1))]
+    public IActionResult Page2()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        ViewData["Title"] = "Page2";
+        return View(_list);
+    }
+
+    [Breadcrumb("Page3", FromAction = nameof(Page1))]
+    public ActionResult<List<string>> Page3()
+    {
+        ViewData["Title"] = "Page3 - Can't get the breadcrumb to work";
+
+        return View(_list);
     }
 }
